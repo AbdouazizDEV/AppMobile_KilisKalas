@@ -1,0 +1,77 @@
+import { Driver } from '@/core/entities';
+
+export const MOCK_DRIVERS: Driver[] = [
+  {
+    id: '1',
+    name: 'Mamadou Diop',
+    phone: '+221771234567',
+    rating: 4.8,
+    totalRides: 523,
+    photo: 'https://i.pravatar.cc/150?img=12',
+    vehicle: {
+      id: 'v1',
+      type: 'standard',
+      brand: 'Toyota',
+      model: 'Corolla',
+      year: 2019,
+      color: 'Blanc',
+      plateNumber: 'DK-1234-A',
+    },
+    location: {
+      latitude: 14.7014,
+      longitude: -17.1486,
+      address: 'Place de l\'Indépendance, Dakar',
+    },
+    isAvailable: true,
+    isOnline: true,
+  },
+  {
+    id: '2',
+    name: 'Aissatou Ba',
+    phone: '+221771234568',
+    rating: 4.9,
+    totalRides: 789,
+    photo: 'https://i.pravatar.cc/150?img=47',
+    vehicle: {
+      id: 'v2',
+      type: 'premium',
+      brand: 'Mercedes',
+      model: 'C-Class',
+      year: 2021,
+      color: 'Noir',
+      plateNumber: 'DK-5678-B',
+    },
+    location: {
+      latitude: 14.7114,
+      longitude: -17.1586,
+      address: 'Almadies, Dakar',
+    },
+    isAvailable: true,
+    isOnline: true,
+  },
+  {
+    id: '3',
+    name: 'Ibrahima Ndiaye',
+    phone: '+221771234569',
+    rating: 4.7,
+    totalRides: 456,
+    photo: 'https://i.pravatar.cc/150?img=33',
+    vehicle: {
+      id: 'v3',
+      type: 'motorcycle',
+      brand: 'Yamaha',
+      model: 'FZ',
+      year: 2020,
+      color: 'Rouge',
+      plateNumber: 'DK-9012-C',
+    },
+    location: {
+      latitude: 14.6914,
+      longitude: -17.1386,
+      address: 'Plateau, Dakar',
+    },
+    isAvailable: true,
+    isOnline: true,
+  },
+];
+

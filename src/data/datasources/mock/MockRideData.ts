@@ -1,0 +1,80 @@
+import { Ride } from '@/core/entities';
+import { MOCK_DRIVERS } from './MockDriverData';
+
+export const MOCK_RIDES: Ride[] = [
+  {
+    id: 'ride1',
+    passengerId: 'user1',
+    driverId: '1',
+    driver: MOCK_DRIVERS[0],
+    status: 'completed',
+    pickup: {
+      latitude: 14.7014,
+      longitude: -17.1486,
+      address: 'Place de l\'Indépendance, Dakar',
+    },
+    destination: {
+      latitude: 14.7645,
+      longitude: -17.3660,
+      address: 'Aéroport International Blaise Diagne',
+    },
+    estimatedPrice: 15000,
+    finalPrice: 15000,
+    estimatedDuration: 25,
+    actualDuration: 28,
+    distance: 12.5,
+    paymentMethod: 'cash',
+    createdAt: new Date('2024-01-15T10:30:00'),
+    completedAt: new Date('2024-01-15T10:58:00'),
+    rating: 5,
+    review: 'Excellent service, chauffeur très professionnel',
+  },
+  {
+    id: 'ride2',
+    passengerId: 'user1',
+    driverId: '2',
+    driver: MOCK_DRIVERS[1],
+    status: 'completed',
+    pickup: {
+      latitude: 14.7114,
+      longitude: -17.1586,
+      address: 'Almadies, Dakar',
+    },
+    destination: {
+      latitude: 14.7014,
+      longitude: -17.1486,
+      address: 'Place de l\'Indépendance, Dakar',
+    },
+    estimatedPrice: 8000,
+    finalPrice: 8000,
+    estimatedDuration: 15,
+    actualDuration: 18,
+    distance: 8.2,
+    paymentMethod: 'orange_money',
+    createdAt: new Date('2024-01-14T14:20:00'),
+    completedAt: new Date('2024-01-14T14:38:00'),
+    rating: 4,
+  },
+  {
+    id: 'ride3',
+    passengerId: 'user1',
+    status: 'cancelled',
+    pickup: {
+      latitude: 14.6914,
+      longitude: -17.1386,
+      address: 'Plateau, Dakar',
+    },
+    destination: {
+      latitude: 14.7645,
+      longitude: -17.3660,
+      address: 'Aéroport International Blaise Diagne',
+    },
+    estimatedPrice: 15000,
+    estimatedDuration: 25,
+    distance: 12.5,
+    paymentMethod: 'cash',
+    createdAt: new Date('2024-01-13T09:00:00'),
+    cancelledAt: new Date('2024-01-13T09:05:00'),
+  },
+];
+
