@@ -14,6 +14,10 @@ export default function RootLayout() {
   const { checkAuth } = useAuthStore();
   const [fontsLoaded] = useFonts({
     Kalam: require('@expo-google-fonts/kalam/700Bold/Kalam_700Bold.ttf'),
+    'Inter-Bold': require('@expo-google-fonts/inter/700Bold/Inter_700Bold.ttf'),
+    'Outfit-SemiBold': require('@expo-google-fonts/outfit/600SemiBold/Outfit_600SemiBold.ttf'),
+    'Poppins-Medium': require('@expo-google-fonts/poppins/500Medium/Poppins_500Medium.ttf'),
+    'Poppins-Bold': require('@expo-google-fonts/poppins/700Bold/Poppins_700Bold.ttf'),
   });
 
   useEffect(() => {
