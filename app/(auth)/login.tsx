@@ -20,7 +20,7 @@ export default function LoginScreen() {
 
   const handleLogin = async () => {
     try {
-      await login(emailOrPhone);
+      await login(emailOrPhone, password || undefined);
       router.replace('/(passenger)/(tabs)/home');
     } catch (err) {
       // L'erreur est gérée par le store

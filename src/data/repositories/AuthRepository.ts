@@ -1,7 +1,7 @@
 import { IAuthRepository, LoginCredentials, RegisterData, AuthResponse } from '@/core/repositories';
 import { User } from '@/core/entities';
 import { MOCK_USERS } from '../datasources/mock/MockUserData';
-import { MOCK_OTP_CODES, MOCK_TOKENS } from '../datasources/mock/MockAuthData';
+import { MOCK_OTP_CODES, MOCK_PASSWORDS, MOCK_TOKENS } from '../datasources/mock/MockAuthData';
 import { AsyncStorageService } from '../datasources/local/AsyncStorageService';
 
 export class AuthRepository implements IAuthRepository {
@@ -13,6 +13,14 @@ export class AuthRepository implements IAuthRepository {
     
     if (!user) {
       throw new Error('Utilisateur non trouvé');
+    }
+
+    // Vérifier le mot de passe si fourni
+    if (credentials.password) {
+      const expectedPassword = MOCK_PASSWORDS[credentials.phone];
+      if (expectedPassword && expectedPassword !== credentials.password) {
+        throw new Error('Mot de passe incorrect');
+      }
     }
 
     const token = MOCK_TOKENS[user.id] || 'mock_token';
