@@ -1,157 +1,193 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
-import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-import { Button } from '@/presentation/components/common/Button';
-import { Card } from '@/presentation/components/common/Card';
-import { useRideStore } from '@/presentation/stores/rideStore';
-import { useAuthStore } from '@/presentation/stores/authStore';
-import { Search, MapPin, Car } from 'lucide-react-native';
-import * as Location from 'expo-location';
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import Svg, { Path } from 'react-native-svg';
+import { useFonts } from 'expo-font';
+import { Kalam_700Bold } from '@expo-google-fonts/kalam';
 
-const DEFAULT_REGION = {
-  latitude: 14.7167, // Bambey, Sénégal
-  longitude: -16.4667,
-  latitudeDelta: 0.05,
-  longitudeDelta: 0.05,
-};
+const DESIGN_WIDTH = 375;
 
 export default function HomeScreen() {
   const router = useRouter();
-  const { user } = useAuthStore();
-  const { activeRide } = useRideStore();
-  const [location, setLocation] = useState(DEFAULT_REGION);
-  const [destination, setDestination] = useState<{ latitude: number; longitude: number } | null>(null);
+  const [fontsLoaded] = useFonts({
+    Kalam: Kalam_700Bold,
+  });
 
-  useEffect(() => {
-    getCurrentLocation();
-  }, []);
+  const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
+  const scale = SCREEN_WIDTH / DESIGN_WIDTH;
 
-  const getCurrentLocation = async () => {
-    try {
-      const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        console.log('Permission de localisation refusée');
-        return;
-      }
-
-      const currentLocation = await Location.getCurrentPositionAsync({});
-      setLocation({
-        latitude: currentLocation.coords.latitude,
-        longitude: currentLocation.coords.longitude,
-        latitudeDelta: 0.05,
-        longitudeDelta: 0.05,
-      });
-    } catch (error) {
-      console.error('Erreur de localisation:', error);
-    }
-  };
-
-  const handleSearchDestination = () => {
+  const handleDestinationClick = () => {
     router.push('/(passenger)/booking/select-destination');
   };
 
-  const handleRequestRide = () => {
-    if (destination) {
-      router.push('/(passenger)/booking/confirm-ride');
-    } else {
-      handleSearchDestination();
-    }
+  const handleMenuClick = () => {
+    router.push('/(passenger)/menu');
   };
 
-  return (
-    <SafeAreaView className="flex-1 bg-white">
-      <View className="flex-1">
-        <MapView
-          provider={PROVIDER_GOOGLE}
-          style={StyleSheet.absoluteFillObject}
-          region={location}
-          showsUserLocation
-          showsMyLocationButton
-        >
-          {destination && (
-            <Marker
-              coordinate={destination}
-              title="Destination"
-              pinColor="#22C55E"
-            />
-          )}
-        </MapView>
+  const dynamicStyles = StyleSheet.create({
+    headerContainer: {
+      position: 'absolute',
+      top: 40 * scale,
+      left: 20 * scale,
+      width: 203 * scale,
+      height: 32 * scale,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      zIndex: 10,
+    },
+    menuIcon: {
+      width: 25 * scale,
+      height: 25 * scale,
+    },
+    logo: {
+      fontFamily: 'Inter-Bold',
+      fontWeight: '700',
+      fontSize: 20 * scale,
+      lineHeight: 20 * scale, // 100%
+      letterSpacing: 0,
+      color: '#10B981',
+      width: 99 * scale,
+      height: 30 * scale,
+    },
+    title: {
+      position: 'absolute',
+      top: 118 * scale,
+      left: 21 * scale,
+      width: 335 * scale,
+      height: 90 * scale,
+      fontFamily: 'Outfit-SemiBold',
+      fontWeight: '600',
+      fontSize: 28 * scale,
+      lineHeight: 44.8 * scale, // 160%
+      letterSpacing: 0,
+      color: '#000000',
+    },
+    destinationInput: {
+      position: 'absolute',
+      top: 232 * scale,
+      left: 20 * scale,
+      width: 335 * scale,
+      height: 50 * scale,
+      borderRadius: 100 * scale,
+      backgroundColor: '#F3F4F6',
+      paddingHorizontal: 20 * scale,
+      flexDirection: 'row',
+      alignItems: 'center',
+      zIndex: 10,
+    },
+    destinationInputText: {
+      flex: 1,
+      fontSize: 14 * scale,
+      color: '#000000',
+      fontFamily: 'Inter-Bold',
+      marginLeft: 12 * scale,
+    },
+    mapContainer: {
+      position: 'absolute',
+      top: 306 * scale,
+      left: 20 * scale,
+      width: 335 * scale,
+      height: 335 * scale,
+      borderRadius: 23 * scale,
+      overflow: 'hidden',
+    },
+    map: {
+      width: '100%',
+      height: '100%',
+    },
+  });
 
-        {/* Header */}
-        <View className="absolute top-0 left-0 right-0 px-4 pt-2">
-          <Card className="mb-2">
-            <View className="flex-row items-center">
-              <View className="flex-1">
-                <Text className="text-xs text-dark-500 mb-1">Où allez-vous ?</Text>
-                <TouchableOpacity
-                  onPress={handleSearchDestination}
-                  className="flex-row items-center"
-                >
-                  <Search size={20} color="#6B7280" />
-                  <Text className="ml-2 text-dark-700 text-base">
-                    {destination ? 'Destination sélectionnée' : 'Rechercher une destination'}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </Card>
+  if (!fontsLoaded) {
+    return null;
+  }
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.content}>
+        {/* Header avec menu et logo */}
+        <View style={dynamicStyles.headerContainer}>
+          <TouchableOpacity onPress={handleMenuClick} activeOpacity={0.8}>
+            <Svg
+              width={25 * scale}
+              height={25 * scale}
+              viewBox="0 0 25 25"
+              style={dynamicStyles.menuIcon}
+            >
+              <Path
+                d="M21.6797 12.5C21.6797 12.6554 21.618 12.8044 21.5081 12.9143C21.3982 13.0242 21.2492 13.0859 21.0938 13.0859H3.90625C3.75085 13.0859 3.60181 13.0242 3.49193 12.9143C3.38204 12.8044 3.32031 12.6554 3.32031 12.5C3.32031 12.3446 3.38204 12.1956 3.49193 12.0857C3.60181 11.9758 3.75085 11.9141 3.90625 11.9141H21.0938C21.2492 11.9141 21.3982 11.9758 21.5081 12.0857C21.618 12.1956 21.6797 12.3446 21.6797 12.5ZM3.90625 6.83594H21.0938C21.2492 6.83594 21.3982 6.7742 21.5081 6.66432C21.618 6.55444 21.6797 6.4054 21.6797 6.25C21.6797 6.0946 21.618 5.94556 21.5081 5.83568C21.3982 5.72579 21.2492 5.66406 21.0938 5.66406H3.90625C3.75085 5.66406 3.60181 5.72579 3.49193 5.83568C3.38204 5.94556 3.32031 6.0946 3.32031 6.25C3.32031 6.4054 3.38204 6.55444 3.49193 6.66432C3.60181 6.7742 3.75085 6.83594 3.90625 6.83594ZM21.0938 18.1641H3.90625C3.75085 18.1641 3.60181 18.2258 3.49193 18.3357C3.38204 18.4456 3.32031 18.5946 3.32031 18.75C3.32031 18.9054 3.38204 19.0544 3.49193 19.1643C3.60181 19.2742 3.75085 19.3359 3.90625 19.3359H21.0938C21.2492 19.3359 21.3982 19.2742 21.5081 19.1643C21.618 19.0544 21.6797 18.9054 21.6797 18.75C21.6797 18.5946 21.618 18.4456 21.5081 18.3357C21.3982 18.2258 21.2492 18.1641 21.0938 18.1641Z"
+                fill="black"
+              />
+            </Svg>
+          </TouchableOpacity>
+          <Text style={dynamicStyles.logo}>Kilis Kalas</Text>
         </View>
 
-        {/* Bottom Sheet */}
-        <View className="absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl shadow-lg">
-          <View className="px-6 pt-4 pb-6">
-            {activeRide ? (
-              <View>
-                <Text className="text-lg font-bold text-dark-900 mb-2">
-                  Course en cours
-                </Text>
-                <Button
-                  title="Voir les détails"
-                  onPress={() => router.push(`/(passenger)/ride-details/${activeRide.id}`)}
-                />
-              </View>
-            ) : (
-              <View>
-                <View className="flex-row justify-between mb-4">
-                  <TouchableOpacity className="items-center flex-1">
-                    <View className="w-12 h-12 bg-primary-100 rounded-full items-center justify-center mb-2">
-                      <Car size={24} color="#F97316" />
-                    </View>
-                    <Text className="text-xs text-dark-600">Standard</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity className="items-center flex-1">
-                    <View className="w-12 h-12 bg-dark-100 rounded-full items-center justify-center mb-2">
-                      <Car size={24} color="#6B7280" />
-                    </View>
-                    <Text className="text-xs text-dark-600">Premium</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity className="items-center flex-1">
-                    <View className="w-12 h-12 bg-dark-100 rounded-full items-center justify-center mb-2">
-                      <Car size={24} color="#6B7280" />
-                    </View>
-                    <Text className="text-xs text-dark-600">XL</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity className="items-center flex-1">
-                    <View className="w-12 h-12 bg-dark-100 rounded-full items-center justify-center mb-2">
-                      <Car size={24} color="#6B7280" />
-                    </View>
-                    <Text className="text-xs text-dark-600">Moto</Text>
-                  </TouchableOpacity>
-                </View>
+        {/* Titre */}
+        <Text style={dynamicStyles.title}>Prêt pour votre prochain trajet ?</Text>
 
-                <Button
-                  title={destination ? "Commander une course" : "Où allez-vous ?"}
-                  onPress={handleRequestRide}
-                  icon={<MapPin size={20} color="white" />}
-                />
-              </View>
-            )}
-          </View>
+        {/* Input destination */}
+        <TouchableOpacity
+          style={dynamicStyles.destinationInput}
+          onPress={handleDestinationClick}
+          activeOpacity={0.8}
+        >
+          <Svg
+            width={25 * scale}
+            height={25 * scale}
+            viewBox="0 0 25 25"
+          >
+            <Path
+              d="M12.5 11.4583C14.8012 11.4583 16.6667 9.59285 16.6667 7.29167C16.6667 4.99048 14.8012 3.125 12.5 3.125C10.1988 3.125 8.33333 4.99048 8.33333 7.29167C8.33333 9.59285 10.1988 11.4583 12.5 11.4583Z"
+              stroke="black"
+              strokeWidth="1.5"
+            />
+            <Path
+              d="M12.5 11.4584V18.75"
+              stroke="black"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+            />
+            <Path
+              d="M16.5073 16.6666C18.2229 18.8677 19.0802 19.9687 18.6323 20.8395C18.5906 20.9201 18.542 20.9975 18.4865 21.0718C17.8875 21.875 16.3406 21.875 13.2469 21.875H11.7521C8.65833 21.875 7.1125 21.875 6.51354 21.0718C6.45863 20.9985 6.40985 20.9208 6.36771 20.8395C5.91979 19.9677 6.77708 18.8677 8.49271 16.6666"
+              stroke="black"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </Svg>
+          <Text style={dynamicStyles.destinationInputText}>Choisir une destination</Text>
+        </TouchableOpacity>
+
+        {/* Carte */}
+        <View style={dynamicStyles.mapContainer}>
+          <MapView
+            provider={PROVIDER_GOOGLE}
+            style={dynamicStyles.map}
+            initialRegion={{
+              latitude: 14.7167, // Bambey, Sénégal
+              longitude: -16.4667,
+              latitudeDelta: 0.05,
+              longitudeDelta: 0.05,
+            }}
+            showsUserLocation
+            showsMyLocationButton={false}
+          />
         </View>
       </View>
     </SafeAreaView>
   );
 }
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+  },
+  content: {
+    flex: 1,
+    position: 'relative',
+  },
+});
