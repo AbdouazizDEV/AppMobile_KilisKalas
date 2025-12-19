@@ -62,7 +62,7 @@ export class AuthRepository implements IAuthRepository {
   async sendOTP(phone: string): Promise<void> {
     await new Promise(resolve => setTimeout(resolve, 500));
     // En production, cela enverrait un vrai SMS
-    console.log(`OTP envoyé à ${phone}: ${MOCK_OTP_CODES[phone] || '123456'}`);
+    console.log(`OTP envoyé à ${phone}: ${MOCK_OTP_CODES[phone] || '1234'}`);
   }
 
   async logout(): Promise<void> {
