@@ -62,6 +62,9 @@ export default function RideInProgressScreen() {
                 variant="outline"
                 size="sm"
                 icon={<Phone size={16} color="#F97316" />}
+                onPress={() => {
+                  Linking.openURL(`tel:${activeRide?.driver?.phone}`);
+                }}
               />
             </View>
             <View className="border-t border-dark-200 pt-4">
