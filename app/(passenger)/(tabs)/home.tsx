@@ -31,7 +31,7 @@ export default function HomeScreen() {
       position: 'absolute',
       top: 40 * scale,
       left: 20 * scale,
-      width: 203 * scale,
+      width: 230 * scale,
       height: 32 * scale,
       flexDirection: 'row',
       justifyContent: 'space-between',
@@ -41,6 +41,8 @@ export default function HomeScreen() {
     menuIcon: {
       width: 25 * scale,
       height: 25 * scale,
+      marginLeft: 10 * scale,
+      fontSize: 28 * scale,
     },
     logo: {
       fontFamily: 'Inter-Bold',
@@ -49,7 +51,7 @@ export default function HomeScreen() {
       lineHeight: 20 * scale, // 100%
       letterSpacing: 0,
       color: '#10B981',
-      width: 99 * scale,
+      width: 100 * scale,
       height: 30 * scale,
     },
     title: {
@@ -87,16 +89,47 @@ export default function HomeScreen() {
     },
     mapContainer: {
       position: 'absolute',
-      top: 306 * scale,
+      top: 322 * scale,
       left: 20 * scale,
       width: 335 * scale,
-      height: 335 * scale,
-      borderRadius: 23 * scale,
+      height: 370 * scale,
       overflow: 'hidden',
+      backgroundColor: '#FFFAFA',
+      borderRadius: 23 * scale,
+      borderWidth: 4 * scale,
+      borderColor: '#10B981',
     },
     map: {
-      width: '100%',
-      height: '100%',
+      position: 'absolute',
+      top: 0,
+      left: 0* scale,
+      width: 333 * scale,
+      height: 323 * scale,
+      borderRadius: 17 * scale,
+      overflow: 'hidden',
+    },
+    buttonContainer: {
+      position: 'absolute',
+      bottom: -3 * scale,
+      left: -3 * scale,
+      width: 337 * scale,
+      height: 60 * scale,
+      backgroundColor: '#10B981',
+      borderBottomLeftRadius: 23 * scale,
+      borderBottomRightRadius: 23 * scale,
+    },
+    buttonText: {
+      position: 'absolute',
+      top: 18 * scale, // 287 - 269 = 18px depuis le haut du buttonContainer
+      left: 72 * scale, // 92px depuis l'écran - 20px du mapContainer = 72px depuis le mapContainer
+      width: 190 * scale,
+      height: 20 * scale,
+      fontFamily: 'Inter-Bold',
+      fontWeight: '600',
+      fontSize: 16 * scale,
+      lineHeight: 20 * scale,
+      color: '#000000',
+      textAlign: 'center',
     },
   });
 
@@ -175,6 +208,14 @@ export default function HomeScreen() {
             showsUserLocation
             showsMyLocationButton={false}
           />
+          {/* Conteneur du bouton "Définir sur la carte" */}
+          <TouchableOpacity
+            style={dynamicStyles.buttonContainer}
+            onPress={handleDestinationClick}
+            activeOpacity={0.8}
+          >
+            <Text style={dynamicStyles.buttonText}>Définir sur la Carte</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </SafeAreaView>
