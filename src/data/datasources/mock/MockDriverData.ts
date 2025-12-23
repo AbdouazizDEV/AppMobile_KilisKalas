@@ -73,5 +73,29 @@ export const MOCK_DRIVERS: Driver[] = [
     isAvailable: true,
     isOnline: true,
   },
+  {
+    id: '4',
+    name: 'Abdoul Aziz Diop',
+    phone: '+221771234570',
+    rating: 4.0,
+    totalRides: 234,
+    photo: 'https://i.pravatar.cc/150?img=15',
+    vehicle: {
+      id: 'v4',
+      type: 'motorcycle',
+      brand: 'Piaggio',
+      model: 'beverly 500',
+      year: 2019,
+      color: 'rouge',
+      plateNumber: 'AA-000-AA',
+    },
+    location: {
+      latitude: 14.7214,
+      longitude: -17.1686,
+      address: 'Almadies, Dakar',
+    },
+    isAvailable: true,
+    isOnline: true,
+  },
 ];
 

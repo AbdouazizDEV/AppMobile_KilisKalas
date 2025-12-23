@@ -33,11 +33,26 @@ export type BookingStackParamList = {
     destinationLat: string;
     destinationLng: string;
     destinationAddress: string;
+    originLat?: string;
+    originLng?: string;
+    selectedMethod?: string;
+    vehicleType?: string;
   };
-  'searching-driver': undefined;
-  'driver-found': undefined;
-  'ride-in-progress': undefined;
-  'ride-completed': undefined;
+  'payment-method': {
+    selectedMethod?: string;
+    originLat?: string;
+    originLng?: string;
+    destinationLat?: string;
+    destinationLng?: string;
+    destinationAddress?: string;
+    vehicleType?: string;
+  };
+  'chat': {
+    driverId: string;
+    driverName: string;
+    driverPhoto?: string;
+    driverPhone: string;
+  };
 };
 
 export type DriverStackParamList = {
